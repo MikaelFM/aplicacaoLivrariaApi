@@ -11,7 +11,11 @@ const App = new Vue({
     methods: {
         submitHandler: function(){
             $.post("/loginValidation", this.form, function(response) {
-              console.log(response)
+              if(response != "OK"){
+                App.erro = response;
+              } else {
+                $('form').submit()
+              }
             });
         }
     }
