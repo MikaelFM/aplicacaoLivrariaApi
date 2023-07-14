@@ -33,5 +33,10 @@ def delete():
 @app.route("/saveBook", methods=['POST'])
 def saveBook():
     json = request.form['newLivro']
-    functions.post_livros(json)
-    return render_template('index.html')
+    print(functions.post_livros(json))
+    return "OK"
+
+@app.route("/editBook", methods=['POST'])
+def editbook():
+    json = request.form['EditLivro']
+    print(functions.post_livros(json))

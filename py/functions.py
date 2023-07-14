@@ -52,9 +52,9 @@ def get_livros(username = None, password = None):
    requisicao = requests.get(f"https://livraria-app.herokuapp.com/api/livros/",verify=False,headers=get_token(username, password))
    return requisicao.json()
 
-def post_livros(json):
+def post_livros(j):
 
-    requisicao = requests.post(f"https://livraria-app.herokuapp.com/api/livros/", json =json, headers= get_token())
+    requisicao = requests.post(f"https://livraria-app.herokuapp.com/api/livros/", json =json.loads(j), headers= get_token())
     return requisicao.json()
 
 def put_livros(titulo,isbn,quantidade,preco,categoria,editora,autores,id):

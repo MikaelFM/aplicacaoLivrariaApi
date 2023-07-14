@@ -94,10 +94,24 @@ const App = new Vue({
                     'newLivro' : JSON.stringify(new_livro)
                 },
                function(response){
-                    alert("success");
+                   if(response == "OK"){
+                      window.location.href = "/"
+                   } else {
+                      console.log(response)
+                   }
                 }
             );
         }
+        editLivro: function(){
+            edit_livro = this.livro;
+            this.autores.forEach((livro) =>  edit_livro.autores.push(livro.id))
+            edit_livro.quantidade = parseInt(edit_livro.quantidade)
+            edit_livro.preco = parseFloat(edit_livro.preco)
+            $.post('/editBook', {
+                    'EditLivro' : JSON.stringify('Editlivro')
+                },
+        }
+
     },
     watch: {
         'searchAutores': function(){
