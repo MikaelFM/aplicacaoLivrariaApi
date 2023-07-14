@@ -1,8 +1,8 @@
-const App = new Vue({
+App = new Vue({
     el: '#content',
     delimiters: ['[[', ']]'],
     data: {       
-        livro: {
+        livro: typeof dados.livro != "undefined" ? dados.livro : {
             'titulo': '',
             'ISBN': '',
             'quantidade': '',
@@ -21,7 +21,8 @@ const App = new Vue({
         if(typeof dados.livros != "undefined"){
             this.livro = dados.livro
         }
-        this.defineStyles()
+        dados.livro.autores.forEach((autor) => this.addAutor(autor.id))
+        this.defineStyles();
     },
     computed: {
         autoresOrdenados: function(){
@@ -53,7 +54,6 @@ const App = new Vue({
         addAutor: function(id){
             let autor = this.autoresDisponiveis.find(el => el.id === id);
             let index = this.autoresDisponiveis.indexOf(autor);
-  
             if (index !== -1) {
                 this.autoresDisponiveis.splice(index, 1);
                 this.autores.push(autor);
@@ -90,6 +90,7 @@ const App = new Vue({
             this.autores.forEach((livro) => new_livro.autores.push(livro.id))
             new_livro.quantidade = parseInt(new_livro.quantidade)
             new_livro.preco = parseFloat(new_livro.preco)
+            new_livro.id = dados.livro.id ?? -1
             $.post('/saveBook', {
                     'newLivro' : JSON.stringify(new_livro)
                 },
@@ -101,16 +102,17 @@ const App = new Vue({
                    }
                 }
             );
-        }
+        },
         editLivro: function(){
             edit_livro = this.livro;
             this.autores.forEach((livro) =>  edit_livro.autores.push(livro.id))
             edit_livro.quantidade = parseInt(edit_livro.quantidade)
             edit_livro.preco = parseFloat(edit_livro.preco)
+            console.log(JSON.stringify(edit_livro))
             $.post('/editBook', {
-                    'EditLivro' : JSON.stringify('Editlivro')
-                },
-        }
+                    'livro' : JSON.stringify(edit_livro)
+                },  
+        )},
 
     },
     watch: {

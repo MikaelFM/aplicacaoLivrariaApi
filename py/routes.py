@@ -33,10 +33,20 @@ def delete():
 @app.route("/saveBook", methods=['POST'])
 def saveBook():
     json = request.form['newLivro']
-    print(functions.post_livros(json))
+    if json.id != -1:
+        print(functions.put_livros(json))  
+    else:
+      print(functions.post_livros(json))  
     return "OK"
 
 @app.route("/editBook", methods=['POST'])
 def editbook():
-    json = request.form['EditLivro']
-    print(functions.post_livros(json))
+    data = {
+        "autores": functions.get_autores(),
+        "editoras":functions.get_editoras(),
+        "categorias":functions.get_categoria(),
+        "livro" : json.loads(request.form['livro'])
+    }
+    data['livro']['categoria'] = data['livro']['categoria']['id']
+    data['livro']['editora'] = data['livro']['editora']['id']
+    return render_template("form-book.html",data=data)

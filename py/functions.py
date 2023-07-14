@@ -57,17 +57,8 @@ def post_livros(j):
     requisicao = requests.post(f"https://livraria-app.herokuapp.com/api/livros/", json =json.loads(j), headers= get_token())
     return requisicao.json()
 
-def put_livros(titulo,isbn,quantidade,preco,categoria,editora,autores,id):
-    dados_livro = {
-        "titulo": titulo,
-        "ISBN": isbn,
-        "quantidade": quantidade,
-        "preco": preco,
-        "categoria": categoria,
-        "editora": editora,
-        "autores": autores
-    }
-    requisicao = requests.put(f"https://livraria-app.herokuapp.com/api/livros/{id}/", json = dados_livro ,headers= get_token())
+def put_livros(j):
+    requisicao = requests.put(f"https://livraria-app.herokuapp.com/api/livros/{id}/", json = json.loads(j) ,headers= get_token())
     return requisicao.json()
 
 def delete_livros(id):

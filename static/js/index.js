@@ -1,4 +1,4 @@
-const App = new Vue({
+App = new Vue({
     el: '#content',
     delimiters: ['[[', ']]'],
     data: {
@@ -110,8 +110,18 @@ const App = new Vue({
             $.post('/delete', {"id":id}, function(response){
                 alert("success");
             });
+        },
+        editBook : function(id){
+            livro = this.livros.filter((livro) => livro.id == id)[0]
+            console.log(livro)
+            $.post('/editBook', {"livro":JSON.stringify(livro)}, function(response){
+                document.open();
+                document.write(response);
+                document.close();
+            });
         }
-    },
+    },  
+    
 })
 $('#select-options li').click(function(){
     App.selectOrder($(this))
