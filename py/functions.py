@@ -52,19 +52,9 @@ def get_livros(username = None, password = None):
    requisicao = requests.get(f"https://livraria-app.herokuapp.com/api/livros/",verify=False,headers=get_token(username, password))
    return requisicao.json()
 
-def post_livros(titulo,isbn,quantidade,preco,categoria,editora,autores):
-    dados_livro = {
-		{
-        "titulo": titulo,
-        "ISBN": isbn,
-        "quantidade": quantidade,
-        "preco": preco,
-        "categoria": categoria,
-        "editora": editora,
-        "autores": [autores]
-        }
-    }
-    requisicao = requests.post(f"https://livraria-app.herokuapp.com/api/livros/", json = dados_livro, headers= get_token())
+def post_livros(json):
+
+    requisicao = requests.post(f"https://livraria-app.herokuapp.com/api/livros/", json =json, headers= get_token())
     return requisicao.json()
 
 def put_livros(titulo,isbn,quantidade,preco,categoria,editora,autores,id):
@@ -82,7 +72,7 @@ def put_livros(titulo,isbn,quantidade,preco,categoria,editora,autores,id):
 
 def delete_livros(id):
     requisicao = requests.delete(f"https://livraria-app.herokuapp.com/api/livros/{id}/",verify=False, headers= get_token())
-    return requisicao.json()
+    return json.dumps(requisicao.json())
 def getcookie():
     return {
         'usuario' : request.cookies.get('usuario'),

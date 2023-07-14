@@ -17,23 +17,23 @@
             <input type="titulo" class="form-control" id="titulo" placeholder="Título" autocomplete="off" v-model="livro.titulo">
         </div>
         <div class="form-group">
-            <input type="isbn" class="form-control"  id="isbn" placeholder="Isbn" autocomplete="off" v-model="livro.isbn">
+            <input type="isbn" class="form-control"  id="isbn" placeholder="Isbn" autocomplete="off" v-model="livro.ISBN">
             <input type="quantidade" class="form-control" id="quantidade" placeholder="Quantidade" autocomplete="off" v-model="livro.quantidade">
             <input type="valor" class="form-control" id="valor" placeholder="Preço" autocomplete="off" v-model="livro.preco">
         </div>
         <div class="form-group">
-            <select name="categoria" id="categoria" class="select-control" v-model="livro.categoria" :class="{ 'with-value': categoria != ''}">
+            <select name="categoria" id="categoria" class="select-control" v-model="livro.categoria" :class="{ 'with-value': livro.categoria != ''}">
                 <option value="">Selecione a Categoria</option>
                 <option v-for="(categoria, index) in categoriasOrdenadas" :value="categoria.id">[[categoria.descricao]]</option>
             </select>
-            <select name="editora" id="editora" class="select-control" v-model="livro.editora" :class="{ 'with-value': editora != ''}">
+            <select name="editora" id="editora" class="select-control" v-model="livro.editora" :class="{ 'with-value': livro.editora != ''}">
                 <option value="">Selecione a Editora</option>
                 <option v-for="(editora, index) in editorasOrdenadas" :value="editora.id">[[editora.nome]]</option>
             </select>  
         </div>
         <div class="form-group">
             <div id="select-autor" @click="openSelectAutor()">
-                <div class="selecteds" :class="{'empty' : AutoresOrdenados.length == 0}">
+                <div class="selecteds" :class="{'empty' : autoresOrdenados.length == 0}">
                     <div v-for="(autor, index) in autores">
                         <span class="autor">[[autor.nome]]</span>
                         <span class="material-symbols-outlined icon" @click="removeAutor(autor.id)">close</span>
@@ -45,8 +45,11 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Confirmar</button>
+        <button type="submit" class="btn btn-primary" @click="submitHandler()">Confirmar</button>
     </div>
+    <script>
+        var dados =  {{data|tojson}};
+    </script>
     <script src="../static/js/form-book.js"></script>
 </body>
 </html>

@@ -105,6 +105,11 @@ const App = new Vue({
             }
             
             return result
+        },
+        deleteBook: function(id){
+            $.post('/delete', {"id":id}, function(response){
+                alert("success");
+            });
         }
     },
 })

@@ -1,3 +1,5 @@
+import json
+
 import requests
 from flask import Flask,render_template,request,make_response,redirect,session
 
@@ -17,4 +19,19 @@ def login():
     return functions.valida_login()
 @app.route("/new")
 def form():
-    return render_template("form-book.html")
+    data = {
+        "autores": functions.get_autores(),
+        "editoras":functions.get_editoras(),
+        "categorias":functions.get_categoria()
+    }
+    return render_template("form-book.html", data=data)
+
+@app.route("/delete", methods=['POST'])
+def delete():
+    id = request.form['id']
+    return functions.delete_livros(id)
+@app.route("/saveBook", methods=['POST'])
+def saveBook():
+    json = request.form['newLivro']
+    functions.post_livros(json)
+    return render_template('index.html')

@@ -4,14 +4,14 @@ const App = new Vue({
     data: {       
         livro: {
             'titulo': '',
-            'isbn': '',
+            'ISBN': '',
             'quantidade': '',
             'preco': '',
             'categoria': '',
             'editora': '',
             'autores': [],
         },
-        categoriasDisponIveis: dados.categorias,
+        categoriasDisponiveis: dados.categorias,
         editorasDisponiveis: dados.editoras,
         autoresDisponiveis: dados.autores,
         autores: [],
@@ -25,17 +25,19 @@ const App = new Vue({
     },
     computed: {
         autoresOrdenados: function(){
-            app = this;
-            return this.autoresDisponiveis
-                .sort((a, b) => app.order(a, b))
-                .filter(item => this.stringNormalize(item.nome).includes(this.stringNormalize(this.searchAutores)));
+            vue_app = this;
+            return vue_app.autoresDisponiveis
+                .sort((a, b) => vue_app.order(a, b))
+                .filter(item => vue_app.stringNormalize(item.nome).includes(vue_app.stringNormalize(vue_app.searchAutores)));
         },
         categoriasOrdenadas: function(){
-            return this.categoriasDisponIveis.sort((a, b) => app.order(a, b, 'descricao'))
+            vue_app = this;
+            return this.categoriasDisponiveis.sort((a, b) => vue_app.order(a, b, 'descricao'))
         },
         editorasOrdenadas: function(){
-            return this.editorasDisponiveis.sort((a, b) => app.order(a, b))
-        }
+            vue_app = this;
+            return this.editorasDisponiveis.sort((a, b) => vue_app.order(a, b))
+        },
     },
     methods: {
         defineStyles: function(){
@@ -82,6 +84,19 @@ const App = new Vue({
             } else {
                 return val1 > val2 ? 1 : -1;
             }
+        },
+        submitHandler: function(){
+            new_livro = this.livro;
+            this.autores.forEach((livro) => new_livro.autores.push(livro.id))
+            new_livro.quantidade = parseInt(new_livro.quantidade)
+            new_livro.preco = parseFloat(new_livro.preco)
+            $.post('/saveBook', {
+                    'newLivro' : JSON.stringify(new_livro)
+                },
+               function(response){
+                    alert("success");
+                }
+            );
         }
     },
     watch: {
