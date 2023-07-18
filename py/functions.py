@@ -53,12 +53,14 @@ def get_livros(username = None, password = None):
    return requisicao.json()
 
 def post_livros(j):
-
-    requisicao = requests.post(f"https://livraria-app.herokuapp.com/api/livros/", json =json.loads(j), headers= get_token())
+    requisicao = requests.post(f"https://livraria-app.herokuapp.com/api/livros/", json=j, headers=get_token())
     return requisicao.json()
 
 def put_livros(j):
-    requisicao = requests.put(f"https://livraria-app.herokuapp.com/api/livros/{id}/", json = json.loads(j) ,headers= get_token())
+    id = j['id']
+    j.pop('id')
+    requisicao = requests.put(f"https://livraria-app.herokuapp.com/api/livros/{id}/", json =j ,headers=get_token())
+    print(requisicao.json())
     return requisicao.json()
 
 def delete_livros(id):
