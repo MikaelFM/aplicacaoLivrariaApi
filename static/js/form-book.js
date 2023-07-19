@@ -18,7 +18,7 @@ App = new Vue({
         searchAutores: '',
     },
     mounted() {
-        if(typeof dados.livros != "undefined"){
+        if(typeof dados.livro != "undefined"){
             this.livro = dados.livro
         }
         dados.livro.autores.forEach((autor) => this.addAutor(autor.id))
@@ -87,10 +87,11 @@ App = new Vue({
         },
         submitHandler: function(){
             new_livro = this.livro;
+            new_livro.autores = []
             this.autores.forEach((livro) => new_livro.autores.push(livro.id))
             new_livro.quantidade = parseInt(new_livro.quantidade)
             new_livro.preco = parseFloat(new_livro.preco)
-            new_livro.id = dados.livro.id ?? -1
+            new_livro.id = typeof dados.livro != "undefined" ? dados.livro.id : -1
             $.post('/saveBook', {
                     'newLivro' : JSON.stringify(new_livro)
                 },
@@ -103,17 +104,6 @@ App = new Vue({
                 }
             );
         },
-        editLivro: function(){
-            edit_livro = this.livro;
-            this.autores.forEach((livro) =>  edit_livro.autores.push(livro.id))
-            edit_livro.quantidade = parseInt(edit_livro.quantidade)
-            edit_livro.preco = parseFloat(edit_livro.preco)
-            console.log(JSON.stringify(edit_livro))
-            $.post('/editBook', {
-                    'livro' : JSON.stringify(edit_livro)
-                },  
-        )},
-
     },
     watch: {
         'searchAutores': function(){
