@@ -4,7 +4,8 @@ const App = new Vue({
     data: {
         form: {
             username: '',
-            password: ''
+            password: '',
+            status: ''
         },
         erro: ''
     },
@@ -17,6 +18,8 @@ const App = new Vue({
                 $('form').submit()
               }
             });
-        }
+        },
+
     }
+
 })

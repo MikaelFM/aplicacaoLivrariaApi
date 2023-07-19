@@ -6,6 +6,9 @@ body {
     background-color: #202124;
     font-family: 'Montserrat', sans-serif;
 }
+#checkbox{
+    color: rgb(216, 216, 216);
+}
 h1 {
     font-size: 3vw;
     color: #8ab4f8;

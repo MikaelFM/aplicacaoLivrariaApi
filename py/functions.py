@@ -15,7 +15,13 @@ def homepage():
     if request.method == "POST":
         user = request.form['login']
         password = request.form['senha']
-        return setcookie(user, password)
+        if('status' in request.form):
+            return setcookie(user, password)
+        else:
+            data = {
+                'livros': get_livros(user, password)
+            }
+            return render_template("index.html", data=data)
     else:
         if getcookie()['usuario'] is None:
             return render_template("login.html")
