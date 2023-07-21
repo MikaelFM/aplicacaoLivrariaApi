@@ -10,6 +10,13 @@ from run import app
 @app.route("/", methods=['POST'])
 def home():
     return functions.homepage()
+
+@app.route("/index")
+def index():
+    data = {
+        'livros': functions.get_livros()
+    }
+    return render_template("index.html", data=data)
 @app.route("/login")
 def get_livros():
     return render_template("login.html")

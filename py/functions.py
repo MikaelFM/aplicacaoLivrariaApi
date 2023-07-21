@@ -5,6 +5,7 @@ import json, copy
 form_data = {}
 
 
+
 def valida_login():
     session['username'] = request.form['username']
     session['password'] = request.form['password']
@@ -31,8 +32,9 @@ def homepage():
         else:
             set_form_data()
             cookies = getcookie()
-            session['username'] = cookies['username']
-            session['password'] = cookies['password']
+            if cookies['username'] is not None:
+                session['username'] = cookies['username']
+                session['password'] = cookies['password']
             data = {
                 'livros': get_livros()
             }

@@ -97,7 +97,7 @@ App = new Vue({
                 },
                function(response){
                    if(response == "OK"){
-                      window.location.href = "/"
+                      window.location.href = "/index"
                    } else {
                       console.log(response)
                    }
