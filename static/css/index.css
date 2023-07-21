@@ -197,3 +197,58 @@ body {
     font-size: 1.05vw;
     color: #D9D9D9;
 }
+
+#meuModal .modal-content{
+    background-color: #202124;
+    border: #2779ff 1px solid;
+    color: #D9D9D9;
+}
+
+.modal-header{
+    border-bottom:none;
+    font-weight: bold;
+    color: #8ab4f8;
+}
+
+.modal-body{
+    border-bottom: #2779ff 1px solid;
+}
+
+.modal-footer{
+    border-top: #2779ff 1px solid;
+}
+
+.close{
+    background-color: #202124;
+    border:#2779ff 1px solid;
+    border-radius: 5px;
+    color: #2779ff;
+    font-size: 3vh;
+}
+
+.close:hover{
+    background-color: #5794f6;
+    color: #D9D9D9;
+}
+
+#fechar{
+    background-color: #202124;
+    color: #2779ff;
+    border: #2779ff 1px solid;
+}
+
+#fechar:hover{
+    background-color: #5794f6;
+    color: #D9D9D9;
+}
+
+#deleto{
+    background-color: #202124;
+    border: red 1px solid;
+    color: red;
+}
+
+#deleto:hover{
+    background-color: red;
+    color: #D9D9D9;
+}

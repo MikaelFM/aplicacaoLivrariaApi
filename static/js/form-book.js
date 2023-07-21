@@ -126,3 +126,6 @@ $(document).click(function(event) {
         $('#select-autor').removeClass('open');
     }
 });
+
+
+
