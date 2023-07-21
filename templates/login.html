@@ -14,13 +14,16 @@
     <h1>Login</h1>
     <form class="form" action="/" method="post" @submit.prevent="submitHandler">
         <div class="form-group">
-            <input name="login" type="text" class="form-control" id="login" placeholder="Login" autocomplete="off" v-model="form.login">
+            <input name="username" type="text" class="form-control" id="login" placeholder="Login" autocomplete="off" v-model="form.username">
         </div>
         <div class="form-group">
-            <input name="senha" type="password" class="form-control" id="password" placeholder="Senha" autocomplete="off" v-model="form.senha">
-            <p id="checkbox"><input type="checkbox" name="status" v-model="form.status">Manter-me conectado</p>
+            <input name="password" type="password" class="form-control" id="password" placeholder="Senha" autocomplete="off" v-model="form.password">
         </div>
-        <p v-if="erro != ''">[[erro]]</p>
+        <div class="form-group">
+            <input type="checkbox" name="status" v-model="form.status">
+            <label id="checkbox">Manter-me conectado</label>
+        </div>
+        <p class="erro" :class="{'visible' : (this.erro != '')}">[[erro]]</p>
         <button class="btn btn-primary">Confirmar</button>
     </form>
     <script src="https://cdn.jsdeliver.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>

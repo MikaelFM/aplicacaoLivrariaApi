@@ -1,61 +1,78 @@
-from flask import Flask,render_template,request,redirect,session,make_response, jsonify
+from flask import render_template, request, make_response, session
 import requests
-import json
+import json, copy
+
+form_data = {}
 
 
 def valida_login():
-    user = request.form['login']
-    password = request.form['senha']
-    success = get_token(user, password) is not None
+    session['username'] = request.form['username']
+    session['password'] = request.form['password']
+    success = get_token() is not None
     if not success:
         return "Usuário e/ou senha incorretos"
     return "OK"
 
 def homepage():
     if request.method == "POST":
-        user = request.form['login']
-        password = request.form['senha']
+        session['username'] = request.form['username']
+        session['password'] = request.form['password']
+        set_form_data()
         if('status' in request.form):
-            return setcookie(user, password)
-        else:
-            data = {
-                'livros': get_livros(user, password)
-            }
-            return render_template("index.html", data=data)
-    else:
-        if getcookie()['usuario'] is None:
-            return render_template("login.html")
+            return setcookie()
         else:
             data = {
                 'livros': get_livros()
             }
             return render_template("index.html", data=data)
+    else:
+        if getcookie()['username'] is None:
+            return render_template("login.html")
+        else:
+            set_form_data()
+            cookies = getcookie()
+            session['username'] = cookies['username']
+            session['password'] = cookies['password']
+            data = {
+                'livros': get_livros()
+            }
+            return render_template("index.html", data=data)
 
-def get_token(usuario = None, senha = None):
+def get_token():
     try:
-        cookie = getcookie()
-        user = cookie['usuario'] if usuario is None else usuario
-        password = cookie['password'] if senha is None else senha
-        data = {"username":f"{user}","password": f"{password}"}
+        data = {"username":f"{session['username']}","password": f"{session['password']}"}
         requisicao = requests.post(f"https://livraria-app.herokuapp.com/api/token/", json=data)
         token = (requisicao.json())['access']
         return {"Authorization": f"Bearer {token}"}
     except:
         return None
-def get_autores():
-    requisicao = requests.get(f"https://livraria-app.herokuapp.com/api/autores/", verify=False,headers=get_token())
+
+def set_form_data():
+    token = get_token()
+    global form_data
+    form_data = {
+        "autores": get_autores(token),
+        "editoras": get_editoras(token),
+        "categorias": get_categoria(token)
+    }
+
+def get_form_data():
+    return copy.copy(form_data)
+
+def get_autores(token):
+    requisicao = requests.get(f"https://livraria-app.herokuapp.com/api/autores/", verify=False,headers=token)
     return requisicao.json()
 
-def get_editoras():
-    requisicao = requests.get(f"https://livraria-app.herokuapp.com/api/editoras/",verify=False,headers=get_token())
+def get_editoras(token):
+    requisicao = requests.get(f"https://livraria-app.herokuapp.com/api/editoras/",verify=False,headers=token)
     return requisicao.json()
 
-def get_categoria():
-   requisicao = requests.get(f"https://livraria-app.herokuapp.com/api/categorias/",verify=False,headers=get_token())
+def get_categoria(token):
+   requisicao = requests.get(f"https://livraria-app.herokuapp.com/api/categorias/",verify=False,headers=token)
    return requisicao.json()
 
-def get_livros(username = None, password = None):
-   requisicao = requests.get(f"https://livraria-app.herokuapp.com/api/livros/",verify=False,headers=get_token(username, password))
+def get_livros():
+   requisicao = requests.get(f"https://livraria-app.herokuapp.com/api/livros/",verify=False,headers=get_token())
    return requisicao.json()
 
 def post_livros(j):
@@ -74,15 +91,15 @@ def delete_livros(id):
     return json.dumps(requisicao.json())
 def getcookie():
     return {
-        'usuario' : request.cookies.get('usuario'),
+        'username': request.cookies.get('username'),
         'password': request.cookies.get('password')
     }
 
-def setcookie(username, password):
+def setcookie():
     data = {
-        'livros': get_livros(username, password)
+        'livros': get_livros()
     }
     resp = make_response(render_template("index.html", data=data))
-    resp.set_cookie('usuario', username)
-    resp.set_cookie('password', password)
+    resp.set_cookie('username', session['username'])
+    resp.set_cookie('password', session['password'])
     return resp

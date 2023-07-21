@@ -52,6 +52,12 @@ input:-webkit-autofill, input::selection {
     background-color: #ffffff;
     color: #202124;
 }
-p {
+.erro: {
+    display: none
     color: #ff4e4e
 }
+.erro.visible {
+    display: block;
+    color: #ff4e4e;
+}
+

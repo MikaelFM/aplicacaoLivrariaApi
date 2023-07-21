@@ -107,9 +107,8 @@ App = new Vue({
             return result
         },
         deleteBook: function(id){
-            $.post('/delete', {"id":id}, function(response){
-                alert("success");
-            });
+            this.livros = this.livros.filter(livro => livro.id !== id);
+            $.post('/delete', {"id":id});
         },
         editBook : function(id){
             livro = this.livros.filter((livro) => livro.id == id)[0]

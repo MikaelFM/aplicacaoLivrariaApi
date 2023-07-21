@@ -19,11 +19,9 @@ def login():
     return functions.valida_login()
 @app.route("/new")
 def form():
-    data = {
-        "autores": functions.get_autores(),
-        "editoras":functions.get_editoras(),
-        "categorias":functions.get_categoria()
-    }
+    if session is None:
+        return render_template("login.html")
+    data = functions.get_form_data()
     return render_template("form-book.html", data=data)
 
 @app.route("/delete", methods=['POST'])
@@ -41,12 +39,9 @@ def saveBook():
 
 @app.route("/editBook", methods=['POST'])
 def editbook():
-    data = {
-        "autores": functions.get_autores(),
-        "editoras":functions.get_editoras(),
-        "categorias":functions.get_categoria(),
-        "livro" : json.loads(request.form['livro'])
-    }
-    data['livro']['categoria'] = data['livro']['categoria']['id']
-    data['livro']['editora'] = data['livro']['editora']['id']
+    livro = json.loads(request.form['livro'])
+    livro['categoria'] = livro['categoria']['id']
+    livro['editora'] = livro['editora']['id']
+    data = functions.get_form_data()
+    data['livro'] = livro
     return render_template("form-book.html",data=data)
