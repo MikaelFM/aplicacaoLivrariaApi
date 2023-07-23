@@ -117,10 +117,10 @@ App = new Vue({
                     window.alert("O ISBN deve conter 13 dígitos")
                 }else{
                     if(this.livro.quantidade.length > 7){
-                        window.alert("A quantidade máxima deve ser de 1.000.0000 de unidades")
+                        window.alert("A quantidade máxima deve ser de 1.000.000 de unidades")
                     }else{
                        if(this.livro.preco.length > 7){
-                            window.alert("O preço máximo deve ser de 1.000.000 de unidades")
+                            window.alert("O preço máximo deve ser de R$ 1.000.000")
                        } 
                     }
                 }
