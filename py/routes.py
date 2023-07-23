@@ -10,6 +10,13 @@ from run import app
 @app.route("/", methods=['POST'])
 def home():
     return functions.homepage()
+
+@app.route("/index")
+def index():
+    data = {
+        'livros': functions.get_livros()
+    }
+    return render_template("index.html", data=data)
 @app.route("/login")
 def get_livros():
     return render_template("login.html")
@@ -19,11 +26,9 @@ def login():
     return functions.valida_login()
 @app.route("/new")
 def form():
-    data = {
-        "autores": functions.get_autores(),
-        "editoras":functions.get_editoras(),
-        "categorias":functions.get_categoria()
-    }
+    if session is None:
+        return render_template("login.html")
+    data = functions.get_form_data()
     return render_template("form-book.html", data=data)
 
 @app.route("/delete", methods=['POST'])
@@ -36,17 +41,14 @@ def saveBook():
     if data['id'] != -1:
         print(functions.put_livros(data))
     else:
-      print(functions.post_livros(data))
+        print(functions.post_livros(data))
     return "OK"
 
 @app.route("/editBook", methods=['POST'])
 def editbook():
-    data = {
-        "autores": functions.get_autores(),
-        "editoras":functions.get_editoras(),
-        "categorias":functions.get_categoria(),
-        "livro" : json.loads(request.form['livro'])
-    }
-    data['livro']['categoria'] = data['livro']['categoria']['id']
-    data['livro']['editora'] = data['livro']['editora']['id']
+    livro = json.loads(request.form['livro'])
+    livro['categoria'] = livro['categoria']['id']
+    livro['editora'] = livro['editora']['id']
+    data = functions.get_form_data()
+    data['livro'] = livro
     return render_template("form-book.html",data=data)

@@ -9,7 +9,7 @@ App = new Vue({
             'preco': '',
             'categoria': '',
             'editora': '',
-            'autores': [],
+            'autores': []
         },
         categoriasDisponiveis: dados.categorias,
         editorasDisponiveis: dados.editoras,
@@ -47,6 +47,14 @@ App = new Vue({
             var altura_opcoes = options * 6 + "vh"
             $('.options').css('max-height', `calc(${altura_selecionados} + ${altura_opcoes})`)
         },
+        valida_form: function () {
+            if (this.livro.titulo && this.livro.ISBN && this.livro.quantidade && this.livro.preco && this.livro.editora && this.livro.categoria && this.autores.length > 0 && this.livro.ISBN.length == 13 && this.livro.quantidade.length <= 7 && this.livro.preco.length <= 7){  
+              return true;
+            }
+            if (!this.livro.titulo || !this.livro.ISBN || !this.livro.quantidade || !this.livro.preco || !this.livro.editora || !this.livro.categoria || this.autores.length == 0) {
+              window.alert("Preencha todos os campos para prosseguir com a edição")
+            }
+        },
         openSelectAutor: function (){
             $('#select-autor').addClass('open')
             $('.selecteds input').focus()
@@ -62,12 +70,12 @@ App = new Vue({
             $('#select-autor input').focus()
         },
         stringNormalize: function(string){
+
             return String(string).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         },
         removeAutor: function(id){
             let autor = this.autores.find(el => el.id === id);
             let index = this.autores.indexOf(autor);
-  
             if (index !== -1) {
                 this.autores.splice(index, 1);
                 this.autoresDisponiveis.push(autor);
@@ -86,24 +94,38 @@ App = new Vue({
             }
         },
         submitHandler: function(){
-            new_livro = this.livro;
-            new_livro.autores = []
-            this.autores.forEach((livro) => new_livro.autores.push(livro.id))
-            new_livro.quantidade = parseInt(new_livro.quantidade)
-            new_livro.preco = parseFloat(new_livro.preco)
-            new_livro.id = typeof dados.livro != "undefined" ? dados.livro.id : -1
-            $.post('/saveBook', {
-                    'newLivro' : JSON.stringify(new_livro)
-                },
-               function(response){
-                   if(response == "OK"){
-                      window.location.href = "/"
-                   } else {
-                      console.log(response)
-                   }
+            if(this.valida_form()){
+                new_livro = this.livro;
+                new_livro.autores = []
+                this.autores.forEach((livro) => new_livro.autores.push(livro.id))
+                new_livro.quantidade = parseInt(new_livro.quantidade)
+                new_livro.preco = parseFloat(new_livro.preco)
+                new_livro.id = typeof dados.livro != "undefined" ? dados.livro.id : -1
+                $.post('/saveBook', {
+                        'newLivro' : JSON.stringify(new_livro)
+                    },
+                    function(response){
+                        if(response == "OK"){
+                            window.location.href = "/index"
+                        } else {
+                            console.log(response)
+                        }
+                    }
+                );  
+            }else{
+                if(this.livro.ISBN.length != 13){
+                    window.alert("O ISBN deve conter 13 dígitos")
+                }else{
+                    if(this.livro.quantidade.length > 7){
+                        window.alert("A quantidade máxima deve ser de 1.000.0000 de unidades")
+                    }else{
+                       if(this.livro.preco.length > 7){
+                            window.alert("O preço máximo deve ser de 1.000.000 de unidades")
+                       } 
+                    }
                 }
-            );
-        },
+            }
+        }    
     },
     watch: {
         'searchAutores': function(){
@@ -126,3 +148,6 @@ $(document).click(function(event) {
         $('#select-autor').removeClass('open');
     }
 });
+
+
+

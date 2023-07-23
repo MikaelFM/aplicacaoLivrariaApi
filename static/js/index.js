@@ -15,7 +15,8 @@ App = new Vue({
         orderBy: 'titulo',
         orderDirection: 'asc',
         searchString: '',
-        indexItemSelected: null
+        indexItemSelected: null,
+        idDeleteBook: null
     },
     computed:{
         livrosPaginados: function(){
@@ -106,10 +107,13 @@ App = new Vue({
             
             return result
         },
-        deleteBook: function(id){
-            $.post('/delete', {"id":id}, function(response){
-                alert("success");
-            });
+        setIdBookToDelete: function(id){
+            this.idDeleteBook = id
+        }, 
+        deleteBook: function(){
+            id = this.idDeleteBook
+            this.livros = this.livros.filter(livro => livro.id !== id);
+            $.post('/delete', {"id":id});
         },
         editBook : function(id){
             livro = this.livros.filter((livro) => livro.id == id)[0]
@@ -136,4 +140,8 @@ $(document).on('click', function(event) {
     if (!bookList.is(event.target) && bookList.has(event.target).length === 0) {
         App.indexItemSelected = null
     }
+});
+
+$("#teste").click('show.bs.modal', function(){
+    $("#ModalLongoExemplo").modal();
 });

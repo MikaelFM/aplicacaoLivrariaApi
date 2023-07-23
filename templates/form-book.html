@@ -9,17 +9,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/form-book.css' ) }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>  
 </head>
 <body>
     <div id="content">
         <h1>Cadastro de Livro</h1>
         <div class="form-group">
-            <input type="titulo" class="form-control" id="titulo" placeholder="Título" autocomplete="off" v-model="livro.titulo">
+            <input type="titulo" name="titulo" class="form-control" id="titulo" placeholder="Título" autocomplete="off" v-model="livro.titulo">
         </div>
         <div class="form-group">
-            <input type="isbn" class="form-control"  id="isbn" placeholder="Isbn" autocomplete="off" v-model="livro.ISBN">
-            <input type="quantidade" class="form-control" id="quantidade" placeholder="Quantidade" autocomplete="off" v-model="livro.quantidade">
-            <input type="valor" class="form-control" id="valor" placeholder="Preço" autocomplete="off" v-model="livro.preco">
+            <input type="number" class="form-control"  id="isbn" placeholder="Isbn" autocomplete="off" v-model="livro.ISBN">
+            <input type="number" class="form-control" id="quantidade" placeholder="Quantidade" autocomplete="off" v-model="livro.quantidade">
+            <input type="number" class="form-control" id="valor" placeholder="Preço" autocomplete="off" v-model="livro.preco">
         </div>
         <div class="form-group">
             <select name="categoria" id="categoria" class="select-control" v-model="livro.categoria" :class="{ 'with-value': livro.categoria != ''}">
